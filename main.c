@@ -116,7 +116,7 @@ void row_select(unsigned int rowNum)
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(7));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(27));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(29));
-			float test = PTA->PDOR;
+			break;
 
 		case 1:
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(26));
@@ -127,7 +127,6 @@ void row_select(unsigned int rowNum)
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(7));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(27));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(29));
-			float test2 = PTA->PDOR;
 			break;
 
 		case 2:
@@ -139,7 +138,6 @@ void row_select(unsigned int rowNum)
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(7));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(27));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(29));
-			float test3 = PTA->PDOR;
 			break;
 
 		case 3:
@@ -151,7 +149,6 @@ void row_select(unsigned int rowNum)
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(7));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(27));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(29));
-			float test4 = PTA->PDOR;
 			break;
 
 		case 4:
@@ -163,7 +160,6 @@ void row_select(unsigned int rowNum)
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(7));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(27));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(29));
-			int test5 = PTA->PDOR;
 			break;
 
 		case 5:
@@ -198,7 +194,6 @@ void row_select(unsigned int rowNum)
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(7));
 			PTA->PDOR &= ~GPIO_PDOR_PDO( GPIO_PIN(27));
 			PTA->PDOR |= GPIO_PDOR_PDO( GPIO_PIN(29));
-			int test7 = PTA->PDOR;
 			break;
 
 		default:
@@ -213,7 +208,7 @@ void select_spot(unsigned int x, unsigned int y)
 		row_select(y);
 	}
 
-	delay(100, 1);
+	delay(180, 1);
 }
 
 void clear()
@@ -330,17 +325,25 @@ void MCUInit(void)
     WDOG_STCTRLH &= ~WDOG_STCTRLH_WDOGEN_MASK;
 }
 
+void initButtonPorts()
+{
+    PORTE->PCR[10] = PORT_PCR_MUX(0x01); // SW2
+    PORTE->PCR[12] = PORT_PCR_MUX(0x01); // SW3
+    PORTE->PCR[27] = PORT_PCR_MUX(0x01); // SW4
+    PORTE->PCR[26] = PORT_PCR_MUX(0x01); // SW5
+    PORTE->PCR[11] = PORT_PCR_MUX(0x01); // SW6
+}
+
 
 int main(void)
 {
 	MCUInit();
 	SystemConfig();
+	initButtonPorts();
 	char field[HEIGHT][MAX];
 	int maxLen;
 	int forLoopLimit;
 	int strLen;
-
-	PTA->PDOR |= GPIO_PDOR_PDO(0x3F000280);
 
     for (;;) {
     	if (!(GPIOE_PDIR & BTN_SW2)) {
@@ -350,7 +353,7 @@ int main(void)
     		forLoopLimit = maxLen * 2 + 20;
     		createString(field, displayText, strLen);
     		for (int i = 0; i < forLoopLimit; i++) {
-    			for (int k=0; k < 12; k++) {
+    			for (int k = 0; k < 12; k++) {
     				showField(field, maxLen, i);
     			}
     		}
@@ -361,18 +364,18 @@ int main(void)
     		forLoopLimit = maxLen * 2 + 20;
     		createString(field, displayText, strLen);
     		for (int i = 0; i < forLoopLimit; i++) {
-    			for (int k=0; k < 12; k++) {
+    			for (int k = 0; k < 12; k++) {
     				showField(field, maxLen, i);
     			}
     		}
     	} else if (!(GPIOE_PDIR & BTN_SW5)) {
-    		char *displayText = "IMP FIT";
-    		strLen = 7;
+    		char *displayText = "IMP";
+    		strLen = 3;
     		maxLen = strLen * 8;
     		forLoopLimit = maxLen * 2 + 20;
     		createString(field, displayText, strLen);
     		for (int i = 0; i < forLoopLimit; i++) {
-    			for (int k=0; k < 12; k++) {
+    			for (int k = 0; k < 12; k++) {
     				showField(field, maxLen, i);
     			}
     		}
@@ -383,7 +386,7 @@ int main(void)
     		forLoopLimit = maxLen * 2 + 20;
     		createString(field, displayText, strLen);
     		for (int i = 0; i < forLoopLimit; i++) {
-    			for (int k=0; k < 12; k++) {
+    			for (int k = 0; k < 12; k++) {
     				showField(field, maxLen, i);
     			}
     		}
@@ -394,7 +397,7 @@ int main(void)
     		forLoopLimit = maxLen * 2 + 20;
     		createString(field, displayText, strLen);
     		for (int i = 0; i < forLoopLimit; i++) {
-    			for (int k=0; k < 12; k++) {
+    			for (int k= 0; k < 12; k++) {
     				showField(field, maxLen, i);
     			}
     		}
