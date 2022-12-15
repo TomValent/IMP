@@ -5,6 +5,7 @@
 #define WIDTH 8
 #define MAX 64
 
+
 void fillField(int fieldLength, char field[HEIGHT][MAX], char template[HEIGHT][WIDTH]);
 
 void addSpace(char field[HEIGHT][MAX], int curr_field_length);
